@@ -15,7 +15,7 @@ autopprof.Capture(autopprof.CPUProfile{
 ```
 
 Run your program and send SIGQUIT to the process
-(or press CTRL+\).
+(or press CTRL+\\).
 
 Profile capturing will start. Pprof UI will be started
 once capture is completed.
