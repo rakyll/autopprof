@@ -1,4 +1,4 @@
-// Copyright 2018 Google Inc. All Rights Reserved.
+// Copyright 2014 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,34 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package main contains a simple hello world example for autopprof.
-package main
+package autopprof_test
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/rakyll/autopprof"
 )
 
-func main() {
+func Example() {
+	// Add the following to your main, then
+	// use CTRL+\ to intercept and capture.
+	// Pprof UI will start in 15 seconds once
+	// the profile is captured.
 	autopprof.Capture(autopprof.CPUProfile{
 		Duration: 15 * time.Second,
 	})
-
-	for i := 0; i < 5000; i++ {
-		generateID(5, 1000)
-	}
-}
-
-func generateID(duration int, usage int) {
-	for j := 0; j < duration; j++ {
-		go func() {
-			for i := 0; i < usage*80000; i++ {
-				str := "str" + strconv.Itoa(i)
-				str = str + "a"
-			}
-		}()
-		time.Sleep(1 * time.Second)
-	}
 }
