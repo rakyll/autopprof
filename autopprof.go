@@ -69,6 +69,10 @@ func Capture(p Profile) {
 	// TODO(jbd): As a library, we shouldn't be in the
 	// business of signal handling. Provide a better way
 	// trigger the capture.
+	go capture(p)
+}
+
+func capture(p Profile) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGQUIT) // TODO(jbd): Add windows support.
 
@@ -76,6 +80,8 @@ func Capture(p Profile) {
 
 	for {
 		<-c
+		log.Println("Starting to capture.")
+
 		profile, err := p.Capture()
 		if err != nil {
 			log.Printf("Cannot capture profile: %v", err)
