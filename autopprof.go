@@ -66,6 +66,9 @@ func (p HeapProfile) Capture() (string, error) {
 // Capture should be used in development-time
 // and shouldn't be in production binaries.
 func Capture(p Profile) {
+	// TODO(jbd): As a library, we shouldn't be in the
+	// business of signal handling. Provide a better way
+	// trigger the capture.
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGQUIT) // TODO(jbd): Add windows support.
 
