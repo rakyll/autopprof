@@ -4,8 +4,6 @@
 
 Pprof made easy at development time.
 
-![autopprof](https://storage.googleapis.com/jbd-public-archive/autopprof.gif)
-
 ## Guide
 
 Add autopprof.Capture to your main function.
