@@ -25,6 +25,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"runtime"
 	"runtime/pprof"
 	"syscall"
 	"time"
@@ -39,6 +40,8 @@ type Profile interface {
 type CPUProfile struct {
 	Duration time.Duration // 30 seconds by default
 }
+
+// TODO(jbd): Add CPU profiling rate as an option.
 
 func (p CPUProfile) Capture() (string, error) {
 	dur := p.Duration
@@ -62,8 +65,51 @@ func (p CPUProfile) Capture() (string, error) {
 type HeapProfile struct{}
 
 func (p HeapProfile) Capture() (string, error) {
+	return captureProfile("heap")
+}
+
+// MutexProfile captures stack traces of holders of contended mutexes.
+type MutexProfile struct{}
+
+func (p MutexProfile) Capture() (string, error) {
+	return captureProfile("mutex")
+}
+
+// BlockProfile captures stack traces that led to blocking on synchronization primitives.
+type BlockProfile struct {
+	// Rate is the fraction of goroutine blocking events that
+	// are reported in the blocking profile. The profiler aims to
+	// sample an average of one blocking event per rate nanoseconds spent blocked.
+	//
+	// If zero value is provided, it will include every blocking event
+	// in the profile.
+	Rate int
+}
+
+func (p BlockProfile) Capture() (string, error) {
+	if p.Rate > 0 {
+		runtime.SetBlockProfileRate(p.Rate)
+	}
+	return captureProfile("block")
+}
+
+// GoroutineProfile captures stack traces of all current goroutines.
+type GoroutineProfile struct{}
+
+func (p GoroutineProfile) Capture() (string, error) {
+	return captureProfile("goroutine")
+}
+
+// Threadcreate profile captures the stack traces that led to the creation of new OS threads.
+type ThreadcreateProfile struct{}
+
+func (p ThreadcreateProfile) Capture() (string, error) {
+	return captureProfile("threadcreate")
+}
+
+func captureProfile(name string) (string, error) {
 	f := newTemp()
-	if err := pprof.WriteHeapProfile(f); err != nil {
+	if err := pprof.Lookup(name).WriteTo(f, 2); err != nil {
 		return "", nil
 	}
 	if err := f.Close(); err != nil {
@@ -72,7 +118,7 @@ func (p HeapProfile) Capture() (string, error) {
 	return f.Name(), nil
 }
 
-// TODO(jbd): Add all supported profiles.
+// TODO(jbd): Add support for custom.
 
 // Capture captures the given profiles at SIGINT
 // and opens a browser with the collected profiles.

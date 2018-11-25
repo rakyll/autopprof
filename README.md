@@ -1,5 +1,7 @@
 # autopprof
 
+[![GoDoc](https://godoc.org/github.com/rakyll/autopprof?status.svg)](https://godoc.org/github.com/rakyll/autopprof)
+
 Pprof made easy at development time.
 
 ## Guide
@@ -19,3 +21,5 @@ Run your program and send SIGQUIT to the process
 
 Profile capturing will start. Pprof UI will be started
 once capture is completed.
+
+See [godoc](https://godoc.org/github.com/rakyll/autopprof) for other profile types.
