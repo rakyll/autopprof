@@ -12,7 +12,7 @@ Add autopprof.Capture to your main function.
 import "github.com/rakyll/autopprof"
 
 autopprof.Capture(autopprof.CPUProfile{
-    Duration: 15 * time.Second,
+    Duration: 30 * time.Second,
 })
 ```
 

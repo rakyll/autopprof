@@ -24,7 +24,7 @@ import (
 
 func main() {
 	autopprof.Capture(autopprof.CPUProfile{
-		Duration: 5 * time.Second,
+		Duration: 30 * time.Second,
 	})
 
 	for i := 0; i < 5000; i++ {

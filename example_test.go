@@ -26,6 +26,6 @@ func Example() {
 	// Pprof UI will start in 15 seconds once
 	// the profile is captured.
 	autopprof.Capture(autopprof.CPUProfile{
-		Duration: 15 * time.Second,
+		Duration: 30 * time.Second,
 	})
 }
