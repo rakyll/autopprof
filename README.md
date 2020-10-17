@@ -1,6 +1,6 @@
 # autopprof
 
-[![GoDoc](https://godoc.org/github.com/rakyll/autopprof?status.svg)](https://godoc.org/github.com/rakyll/autopprof)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/rakyll/autopprof)](https://pkg.go.dev/github.com/rakyll/autopprof)
 
 Pprof made easy at development time.
 
