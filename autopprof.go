@@ -134,7 +134,7 @@ func Capture(p Profile) {
 
 func capture(p Profile) {
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, syscall.SIGQUIT) // TODO(jbd): Add windows support.
+	signal.Notify(c, os.Interrupt, syscall.SIGQUIT)
 
 	fmt.Println("Send SIGQUIT (CTRL+\\) to the process to capture...")
 
