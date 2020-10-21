@@ -134,9 +134,16 @@ func Capture(p Profile) {
 
 func capture(p Profile) {
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGQUIT)
 
-	fmt.Println("Send SIGQUIT (CTRL+\\) (CTRL+BREAK on Windows) to the process to capture...")
+	switch runtime.GOOS {
+	case "windows":
+		signal.Notify(c, os.Interrupt)
+		fmt.Println("Send interrupt (CTRL+BREAK) to the process to capture")
+		fmt.Printf("Use (taskkill /F /PID %d) to end process\n", os.Getpid())
+	default:
+		signal.Notify(c, syscall.SIGQUIT)
+		fmt.Println("Send SIGQUIT (CTRL+\\) to the process to capture...")
+	}
 
 	for {
 		<-c
